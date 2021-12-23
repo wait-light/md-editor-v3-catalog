@@ -30,6 +30,7 @@ const catalogDocuments = []
 var cataLogSelf
 var lastNameDocument = null
 
+
 onMounted(() => {
     if (!getTargetByUrl(window.location.href)) {
         window.location.href = window.location.href + "#"
@@ -38,7 +39,7 @@ onMounted(() => {
     window.addEventListener("hashchange", (hash) => {
         toTarget(hash)
     }, false);
-    cataLogSelf = document.getElementsByNaanchorOffsetme("tik-catalog")[0]
+    cataLogSelf = document.getElementsByName("tik-catalog")[0]
     // window.onhashchange = upBrowsing
 })
 const getTargetByUrl = (url) => {
@@ -61,7 +62,7 @@ const toTarget = (hash) => {
         lastNameDocument.classList.remove(props.browsingClass)
     }
     lastNameDocument = now
-}anchorOffset
+}
 const findTargetByname = (name) => {
     for (let index = 0; index < catalogDocuments.length; index++) {
         const element = catalogDocuments[index];
@@ -172,7 +173,7 @@ const catalogs = computed(() => {
                 for (let i = lastItem.level + 1; i <= 6; i++) {
                     const { children } = lastItem;
                     if (!children) {
-                        // 如果 anchorOffsetchildren 不存在
+                        // 如果 children 不存在
                         lastItem.children = [item];
                         break;
                     }
@@ -189,7 +190,11 @@ const catalogs = computed(() => {
                 tocItems.push(item);
             }
         }
+
+
     });
+    return tocItems;
+});
 </script>
 <style>
 .catalog-browsing {
