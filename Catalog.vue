@@ -189,7 +189,7 @@ const catalogs = computed(() => {
                 tocItems.push(item);
             }
         }
-    });anchorOffset
+    });
 </script>
 <style>
 .catalog-browsing {
