@@ -29,8 +29,6 @@ const targetDocuments = []
 const catalogDocuments = []
 var cataLogSelf
 var lastNameDocument = null
-
-
 onMounted(() => {
     if (!getTargetByUrl(window.location.href)) {
         window.location.href = window.location.href + "#"
@@ -72,12 +70,18 @@ const findTargetByname = (name) => {
     }
 }
 const upBrowsing = () => {
-    let index = 0
-    for (const item of targetDocuments) {
-        const target = item
+    for (let index = 0; index < targetDocuments.length; index++) {
+        const target = targetDocuments[index];
         if (target) {
+            let minY = target.offsetTop + props.anchorOffset
+            let maxY = 0
+            if (index + 1 < targetDocuments.length) {
+                maxY = targetDocuments[index + 1].offsetTop + props.anchorOffset
+            } else {
+                maxY = minY + target.offsetHeight
+            }
             //锚点位于窗口中，点亮目录中的对应点
-            if (window.scrollY >= target.minY && window.scrollY <= target.maxY) {
+            if (window.scrollY >= minY && window.scrollY <= maxY) {
                 const current = catalogDocuments[index]
                 if (lastNameDocument && current != lastNameDocument) {
                     lastNameDocument.classList.remove(props.browsingClass)
@@ -93,7 +97,6 @@ const upBrowsing = () => {
             }
 
         }
-        index++
     }
 }
 const prepareDocument = (tocs) => {
@@ -111,9 +114,7 @@ const prepareDocument = (tocs) => {
                 anchor.id = `${item.name}-anchor`
                 anchor.className = "tik-anchor"
                 let offset = props.anchorOffset
-                anchor.setAttribute("style", `display: inline-block; position: relative; height: 0;top: ${offset}px;`)
-                anchor.minY = target.offsetTop + offset
-                anchor.maxY = anchor.minY + target.offsetHeight
+                anchor.setAttribute("style", `display: block; position: relative; height: 0;top: ${offset}px;`)
                 target.insertAdjacentElement("beforebegin", anchor)
                 const autoAnchor = target.getElementsByTagName("a")
                 if (autoAnchor.length > 0) {
@@ -121,10 +122,6 @@ const prepareDocument = (tocs) => {
                     autoAnchorItem.href = `#${item.name}-anchor`
                 }
                 targetDocuments.push(anchor)
-            } else {
-                let anchor = tikAnchor[0]
-                anchor.minY = target.offsetTop + offset
-                anchor.maxY = anchor.minY + target.offsetHeight
             }
 
         }
@@ -133,20 +130,10 @@ const prepareDocument = (tocs) => {
         }
     }
 }
-const resizeTargetRange = () => {
-    let len = targetDocuments.length
-    for (let index = 0; index < len; index++) {
-        const element = targetDocuments[index];
-        if (index + 1 < len) {
-            element.maxY = targetDocuments[index + 1].minY
-        }
-    }
-}
 onUpdated(() => {
     targetDocuments.splice(0, targetDocuments.length);
     catalogDocuments.splice(0, catalogDocuments.length)
     prepareDocument(tocItems)
-    resizeTargetRange()
     upBrowsing()
 })
 const catalogs = computed(() => {
@@ -193,6 +180,16 @@ const catalogs = computed(() => {
 
 
     });
+    const item = {
+        text: "评论",
+        href: "#comment",
+        level: 1,
+        children: null,
+        name: "comment"
+    }
+    tocItems.push(item)
+    // console.log(tocItems);
+
     return tocItems;
 });
 </script>
