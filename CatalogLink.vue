@@ -1,11 +1,11 @@
 <template>
     <div class="catalog-container">
         <a
-            :name="tocItem.name"
+            :name="`${tocItem.name}-anchor`"
             class="catalog-link"
             :style="style"
             :title="tocItem.text"
-            :href="tocItem.href"
+            :href="`${tocItem.href}`"
         >{{ tocItem.text }}</a>
     </div>
     <div v-if="tocItem.children">

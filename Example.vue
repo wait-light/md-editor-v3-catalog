@@ -20,4 +20,16 @@ const catalogList = ref([])
 const onGetCatalog = (list) => {
     this.catalogList = list
 },
+
 </script>
+<style scoped>
+.catalog {
+    border-radius: 4px;
+    position: sticky;
+    max-height: 500px;
+    width: 100%;
+    overflow: auto;
+    background: white;
+    top: 75px;
+}
+</style>
